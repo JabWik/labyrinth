@@ -37,7 +37,7 @@ void tabGenerator(int t[HEIGHT][WIDTH])
         }
     }
 
-     for (int i = 1; i < HEIGHT-1; i++) //generating special events variations under "empty event"
+    for (int i = 1; i < HEIGHT-1; i++) //generating special events variations under "empty event"
     {
         for (int j = 1; j < WIDTH-1; j++)
         {
@@ -59,7 +59,7 @@ void tabGenerator(int t[HEIGHT][WIDTH])
         }
     }
 
-     for (int i = 1; i < HEIGHT-1; i++) //generating special events variations under "treasure"
+    for (int i = 1; i < HEIGHT-1; i++) //generating special events variations under "treasure"
     {
         for (int j = 1; j < WIDTH-1; j++)
         {
@@ -75,7 +75,7 @@ void tabGenerator(int t[HEIGHT][WIDTH])
         t[lottery(1,10)][lottery(1,10)] = 6;
     }
 
-    t[5][5] = visited;
+    t[5][5] = start;
 
 }
 
