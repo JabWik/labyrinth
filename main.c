@@ -1,97 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include "stats.h"
-#include "tabMap.h"
-
-struct stats player;
-
-int action()
-{
-    int x;
-    static int foolish = 0;
-
-    printf("\n\n\nW którą stronę chcesz iść?");
-choice:
-    if (foolish > 3)
-    {
-        printf("Zginales przez wlasna glupote!!!");
-        getchar();
-        exit(0);
-    }
-    printf("\n1. W lewo.\n2. W prawo.\n3.W górę.\n4. W dół.\n5. Popełnij samobójstwo.\n");
-    scanf("%d", &x);
-    switch(x)
-    {
-    case 1:
-    {
-        return -1;
-    }
-    case 2:
-    {
-        return +1;
-    }
-    case 3:
-    {
-        return -WIDTH;
-    }
-    case 4:
-    {
-        return +WIDTH;
-    }
-    case 5:
-    {
-        exit(0);
-    }
-    default:
-    {
-        foolish++;
-        printf("Nie wyglupiaj sie!!!");
-        goto choice;
-    }
-    }
-}
-
-int fight(int who)
-{
-    struct stats enemy;
-    enemy.attackpoint = 1;
-    enemy.healt = 10;
-    while(enemy.healt > 0 && player.healt > 0)
-    {
-        printf("statsy z walki");
-        enemy.healt += -player.attackpoint;
-        player.healt += -enemy.attackpoint;
-    }
-}
-
-void event(int number)
-{
-    switch(number)
-    {
-    case tabEnd:
-    {
-        printf("wygrales\n");
-        exit(0);
-    }
-    case attack:
-    {
-        printf("wpadles na królika\n");
-        fight(number);
-        break;
-    }
-    default:
-    {
-        break;
-    }
-    }
-}
-
+#include "global.h"
+#include <stdbool.h>
 
 int main()
 {
     srand(time(NULL));
 
+    bool quit = false;
     int choice;
     printf("1.nowa gra\n2.naziwsko\nanykey.quit\n");
     scanf("%d",&choice);
@@ -101,8 +15,26 @@ int main()
     {
         printf("1.pierwszapostac\n2.drugapostac\n");
         scanf("%d",&choice);
-        player.healt = 100;
-        player.attackpoint = 2;
+        switch(choice)
+        {
+        case 1:
+        {
+            player.health = 200;
+            player.attackpoints = 10;
+            break;
+        }
+        case 2:
+        {
+            player.health = 100;
+            player.attackpoints = 20;
+            break;
+        }
+        default:
+        {
+            printf("Zginąłeś");
+            return 0;
+        }
+        }//end switch
         break;
     }
     case 2:
@@ -121,11 +53,30 @@ int main()
 
     int *ptr = &tab[5][5];
     tabShow(tab);
-    while(1)
+
+    while(!quit)
     {
+        event(ptr, &quit);
+        *ptr = 8;
         ptr += action();
-        event( *ptr );
-        //printf("%d\n", *ptr);
+        tabShow(tab);
     }
+
+
+    FILE *f = fopen("nazwa", "w");
+
+    for (int i = 0; i < HEIGHT; i++)
+    {
+        for (int j = 0; j < WIDTH; j++)
+        {
+            fprintf(f,"%d ",tab[i][j]);
+        }
+        fprintf(f,"\n");
+    }
+
+    fprintf(f, "HP %i", player.health);
+
+    fclose(f);
+
     return 0;
 }
