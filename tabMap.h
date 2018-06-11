@@ -1,11 +1,9 @@
 #ifndef TABMAP_H_INCLUDED
 #define TABMAP_H_INCLUDED
 
-#define HEIGHT 11
-#define WIDTH 11
+#include "global.h"
 
-
-enum tabEvents
+enum tabEvents //map stats
 {
     tabEnd = 0,
 
@@ -32,6 +30,8 @@ enum tabEvents
     figure = 5,
 
     secret = 6,
+
+    start = 7,
 
     visited = 8,
 
