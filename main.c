@@ -7,6 +7,10 @@ int main()
 
     bool quit = false;
     int choice;
+
+    player.goldpoint = 0;
+    player.victorypoint = 0;
+
     printf("1.nowa gra\n2.naziwsko\nanykey.quit\n");
     scanf("%d",&choice);
     switch(choice)
@@ -21,12 +25,16 @@ int main()
         {
             player.health = 200;
             player.attackpoints = 10;
+            player.will = 5;
+            player.might = 15;
             break;
         }
         case 2:
         {
             player.health = 100;
             player.attackpoints = 20;
+            player.will = 15;
+            player.might = 5;
             break;
         }
         default:
@@ -58,12 +66,14 @@ int main()
     {
         event(ptr, &quit);
         *ptr = 8;
+        if (quit == true){break;}
         ptr += action();
         tabShow(tab);
     }
 
+    FILE *f = fopen("summary", "w");
 
-    FILE *f = fopen("nazwa", "w");
+    fprintf(f, "\nMapa przebytego labiryntu:\n\n");
 
     for (int i = 0; i < HEIGHT; i++)
     {
@@ -75,6 +85,8 @@ int main()
     }
 
     fprintf(f, "HP %i", player.health);
+    fprintf(f, "Zdobyte złoto: %i", player.goldpoint);
+    fprintf(f, "Zdobyte punkty: %i", player.victorypoint);
 
     fclose(f);
 
